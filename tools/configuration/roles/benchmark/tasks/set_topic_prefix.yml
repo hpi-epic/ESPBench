@@ -1,0 +1,6 @@
+
+- replace:
+    path: '{{ repository_root_directory }}/tools/commons/commons.conf'
+    regexp: '^topic-prefix = ".*"$'
+    replace: 'topic-prefix = "{{ prefix }}"'
+  when: prefix is defined

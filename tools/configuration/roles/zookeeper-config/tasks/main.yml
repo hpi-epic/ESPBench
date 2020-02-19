@@ -1,0 +1,14 @@
+---
+
+- name: Copy Apache Zookeeper configuration.
+  copy:
+    src=zookeeper.properties
+    dest="/opt/kafka/config/zookeeper.properties"
+    owner=benchmarker group=benchmarker
+    mode=777
+
+- name: Set up Apache Zookeeper Service.
+  copy: 
+    src=zookeeper_initd 
+    dest=/etc/init.d/zookeeper
+    mode=0755

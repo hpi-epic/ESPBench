@@ -1,0 +1,5 @@
+- name: Copy flink jar to master node
+  copy:
+    src="{{ repository_path }}/implementation/flink/cluster/target/scala-2.11/Flink-Cluster-assembly-0.1.0-SNAPSHOT.jar"
+    dest="{{ benchmarker_home }}"
+    owner=benchmarker group=benchmarking

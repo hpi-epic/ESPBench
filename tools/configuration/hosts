@@ -1,0 +1,23 @@
+[all_nodes:children]
+streaming_cluster
+kafka_cluster
+erp_db
+
+[streaming_cluster:children]
+master
+slaves
+
+[master]
+bench01 ansible_host=xxx.xxx.xx.xx
+
+[slaves]
+bench02 ansible_host=xxx.xxx.xx.xx
+bench03 ansible_host=xxx.xxx.xx.xx
+
+[kafka_cluster]
+bench05 ansible_host=xxx.xxx.xx.xx
+bench06 ansible_host=xxx.xxx.xx.xx
+bench07 ansible_host=xxx.xxx.xx.xx
+
+[erp_db]
+bench04 ansible_host=xxx.xxx.xx.xx

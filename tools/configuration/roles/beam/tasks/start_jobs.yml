@@ -1,0 +1,6 @@
+- name: Start Apache Beam Jobs
+  shell: java -classpath implementation/beam/target/Beam-assembly-0.1.0-SNAPSHOT.jar org.hpi.esb.beam.Main
+  args:
+    chdir: "{{ benchmarker_home }}/{{ benchmarker_repository_path }}"
+  become: yes
+  become_user: benchmarker

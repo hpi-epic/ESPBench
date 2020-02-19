@@ -1,0 +1,30 @@
+---
+
+- name: Install zsh.
+  apt: name={{ item }} state=latest
+  with_items:
+    - git
+    - zsh
+    - git-core
+
+- name: Clone oh-my-zsh repo
+  git: repo=https://github.com/robbyrussell/oh-my-zsh.git dest=/home/benchmarker/.oh-my-zsh
+
+- name: Create conf folder in home directory
+  file: path=/home/benchmarker/conf/ state=directory owner=benchmarker
+
+- name: Copy .zshrc file.
+  copy:
+    src=zshrc.in
+    dest=/home/benchmarker/conf/zshrc
+    owner=benchmarker
+    group=benchmarker
+
+- name: remove standard zshrc
+  file: path=/home/benchmarker/.zshrc state=absent
+
+- name: symlink zshrc
+  file: path=/home/benchmarker/.zshrc src=/home/benchmarker/conf/zshrc state=link owner=benchmarker
+
+- name: Set zsh as default shell for benchmarker.
+  user: name=benchmarker shell=/bin/zsh

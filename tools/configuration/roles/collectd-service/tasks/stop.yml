@@ -1,0 +1,5 @@
+---
+- name: Stop collecD Service.
+  service: name=collectd state=stopped
+  tags:
+    - stop

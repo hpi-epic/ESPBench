@@ -1,0 +1,6 @@
+
+- replace:
+    path: '{{ repository_root_directory }}/tools/commons/commons.conf'
+    regexp: '^sending-interval = .*$'
+    replace: 'sending-interval = {{ interval }}'
+  when: interval is defined

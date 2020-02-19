@@ -1,0 +1,2 @@
+- name: Create conf folder in home directory
+  file: path="~/Benchmarks" state=directory owner=benchmarker

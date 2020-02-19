@@ -1,0 +1,7 @@
+---
+
+- hosts: master
+  tasks:
+    - name: "Terminate Running Flink Jobs."
+      include: ../roles/flink/tasks/terminate_running_jobs.yml
+  become: true

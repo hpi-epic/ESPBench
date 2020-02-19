@@ -1,0 +1,7 @@
+- name: Run validator.
+  shell: java -Xms8g -jar -Dlog4j.configuration=validator.log4j.properties \
+    -Dlogfilename="$(cat tools/commons/commons.conf | grep "topic-prefix" | sed -e 's/topic-prefix = \"*//' | sed -e 's/\"//')"_\
+    "$(cat tools/commons/commons.conf | grep "benchmark-run" | sed -e 's/benchmark-run = //')"_validator \
+    tools/validator/target/scala-2.11/Validator-assembly-0.1.0-SNAPSHOT.jar
+  args:
+    chdir: "{{ repository_root_directory }}"

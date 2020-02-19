@@ -1,0 +1,5 @@
+---
+- name: Restart collecD Service.
+  service: name=collectd state=restarted
+  tags:
+    - restart

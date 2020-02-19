@@ -1,0 +1,31 @@
+---
+
+- name: Create output folder if not existent
+  local_action:
+    module: file
+    path: "{{monitoring_output_directory}}_{{ date_time }}"
+    state: directory
+  when: prefix is not defined
+
+- name: Create verbose output folder if not existent
+  local_action:
+    module: file
+    path: "{{monitoring_output_directory}}_{{prefix}}_{{run}}_{{interval}}_{{query}}_{{ date_time }}"
+    state: directory
+  when: prefix is defined
+
+- name: Fetch CSV output folder
+  synchronize:
+    src: /var/lib/collectd/csv/
+    dest: "{{monitoring_output_directory}}_{{ date_time }}"
+    rsync_path: "/usr/bin/rsync"
+    mode: pull
+  when: prefix is not defined
+
+- name: Fetch CSV output folder (verbose destination folder)
+  synchronize:
+    src: /var/lib/collectd/csv/
+    dest: "{{monitoring_output_directory}}_{{prefix}}_{{run}}_{{interval}}_{{query}}_{{ date_time }}"
+    rsync_path: "/usr/bin/rsync"
+    mode: pull
+  when: prefix is defined

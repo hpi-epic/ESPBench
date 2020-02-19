@@ -1,0 +1,5 @@
+- name: Run local scala script to reassign kafka topics.
+  shell: java -jar tools/util/target/scala-2.11/Util-assembly-0.1.0-SNAPSHOT.jar reassign
+  args:
+    chdir: "{{ repository_root_directory }}"
+

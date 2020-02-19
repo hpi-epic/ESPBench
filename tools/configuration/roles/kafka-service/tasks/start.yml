@@ -1,0 +1,5 @@
+---
+- name: Start Kafka Service.
+  service: name=kafka state=started 
+  tags:
+    - start

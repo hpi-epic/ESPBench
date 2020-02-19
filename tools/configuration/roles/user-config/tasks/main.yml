@@ -1,0 +1,15 @@
+---
+
+- name: Add benchmarking group. 
+  group: 
+    name: benchmarking
+    state: present
+
+- name: Add benchmarker user. 
+  user: 
+    name: benchmarker
+    groups: benchmarking
+    append: true
+    generate_ssh_key: yes
+
+- include: tasks/install-zsh.yml

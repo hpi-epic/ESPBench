@@ -1,0 +1,6 @@
+---
+
+- hosts: kafka_cluster
+  roles:
+    - zookeeper-service
+  become: true

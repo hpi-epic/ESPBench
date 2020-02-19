@@ -1,0 +1,4 @@
+- name: Import ERP data
+  shell: java -Xms{{ datasender_heap }}g -jar DataSender-assembly-0.1.0-SNAPSHOT.jar import
+  args:
+      chdir: "{{ benchmarker_home }}"

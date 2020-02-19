@@ -1,0 +1,24 @@
+---
+
+- hosts: kafka_cluster
+  tasks:
+    - name: "Stop Kafka Servers."
+      include: ../roles/kafka-service/tasks/stop.yml
+    - name: "Waiting 30 seconds for kafka servers to shut down."
+      pause:
+        seconds: 30
+    - name: "Delete Kafka topics from disk."
+      include: ../roles/kafka-topic/tasks/delete.yml
+  become: true
+
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+    - name: "Run Scala script to delete Kafka topics from Zookeeper."
+      include: ../roles/zookeeper-topic/tasks/delete.yml
+ 
+- hosts: kafka_cluster
+  tasks:
+    - name: "Start Kafka Servers."
+      include: ../roles/kafka-service/tasks/start.yml
+  become: true

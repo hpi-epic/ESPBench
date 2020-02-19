@@ -1,0 +1,17 @@
+- name: "Stop Flink Cluster"
+  command: "/bin/sh -c '/opt/flink/bin/stop-cluster.sh'"
+  async: 45
+  poll: 0
+
+- name: "Waiting a few seconds for cluster to shut down."
+  pause:
+    seconds: 10
+
+- name: "Start Flink Cluster"
+  command: "/bin/sh -c '/opt/flink/bin/start-cluster.sh'"
+  async: 45
+  poll: 0
+
+- name: "Waiting a few seconds for cluster to start again."
+  pause:
+    seconds: 10

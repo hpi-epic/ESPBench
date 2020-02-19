@@ -1,0 +1,9 @@
+- name: Install collectd.
+  apt:
+    name: collectd
+    state: present
+
+- name: Install collectd-utils
+  apt:
+    name: collectd-utils
+    state: present

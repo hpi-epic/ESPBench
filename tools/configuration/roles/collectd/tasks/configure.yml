@@ -1,0 +1,5 @@
+- name: Copy collectd configuration.
+  copy: 
+    src=collectd.conf dest="/etc/collectd/collectd.conf" 
+    owner=root group=root
+

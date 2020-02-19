@@ -1,0 +1,9 @@
+---
+- include: tasks/start.yml
+  when: action == 'start'
+
+- include: tasks/stop.yml
+  when: action == 'stop'
+
+- include: tasks/restart.yml
+  when: action == 'restart'

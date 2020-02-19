@@ -1,0 +1,7 @@
+---
+
+- hosts: master
+  tasks:
+    - name: "Restart Flink Cluster."
+      include: ../roles/flink/tasks/restart_cluster.yml
+  become: true

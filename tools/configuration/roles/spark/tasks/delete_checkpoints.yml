@@ -1,0 +1,9 @@
+- name: "Delete checkpoints"
+  command: "/bin/sh -c '/opt/hadoop/bin/hdfs dfs -rm -r /spark'"
+
+- name: "Waiting a few seconds for deletion to complete."
+  pause:
+    seconds: 10
+
+- name: "Create new checkpoint dir"
+  command: "/bin/sh -c '/opt/hadoop/bin/hdfs dfs -mkdir /spark'"

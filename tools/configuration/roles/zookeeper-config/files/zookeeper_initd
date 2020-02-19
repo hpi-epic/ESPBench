@@ -1,0 +1,139 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          skeleton
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Example initscript
+# Description:       This file should be used to construct scripts to be
+#                    placed in /etc/init.d.
+### END INIT INFO
+
+# Author: Foo Bar <foobar@baz.org>
+#
+# Please remove the "Author" lines above and replace them
+# with your own name if you copy and modify this script.
+
+# Do NOT "set -e"
+
+# PATH should only include /usr/* if it runs after the mountnfs.sh script
+KAFKA_PATH=/opt/kafka/bin
+NAME=zookeeper
+PIDFILE=/var/run/$NAME.pid
+SCRIPTNAME=/etc/init.d/$NAME
+
+# Load the VERBOSE setting and other rcS variables
+. /lib/init/vars.sh
+
+# Define LSB log_* functions.
+# Depend on lsb-base (>= 3.2-14) to ensure that this file is present
+# and status_of_proc is working.
+. /lib/lsb/init-functions
+
+#
+# Function that starts the daemon/service
+#
+do_start()
+{
+	echo "Starting Apache Zookeeper."
+        start-stop-daemon --start --quiet --pidfile $PIDFILE --background --no-close --exec $KAFKA_PATH/zookeeper-server-start.sh -- "/opt/kafka/config/zookeeper.properties" > /opt/kafka/zookeeper.log 2> /opt/kafka/zookeeper.err
+}
+
+#
+# Function that stops the daemon/service
+#
+do_stop()
+{
+        # Stop daemons.
+	pid=$(ps ax | grep java | grep -i QuorumPeerMain | grep -v grep | awk '{print $1}')
+
+	if [ -n "$pid" ]; then
+          echo "Shutting down Apache Zookeeper";
+	  kill -s TERM $pid 
+	else
+	  echo "No Apache Zookeeper was running."
+	fi
+}
+
+#
+# Function that hard kills the daemon/service
+#
+do_hard_stop()
+{
+        # Stop daemons.
+	pid=$(ps ax | grep java | grep -i QuorumPeerMain | grep -v grep | awk '{print $1}')
+        if [ -n "$pid" ]
+          then
+          echo "Shutting down Apache Zookeeper.";
+          kill -9 $pid
+        else
+          echo "Apache Zookeeper was not running."
+        fi
+}
+
+#
+# Function that prints the status
+#
+do_status()
+{
+	pid=$(ps ax | grep java | grep -i QuorumPeerMain | grep -v grep | awk '{print $1}')
+        if [ -n "$pid" ]
+          then
+          echo "Apache Zookeeper is Running as PID: $pid"
+        else
+          echo "Apache Zookeeper is not running."
+        fi
+}
+
+
+case "$1" in
+  start)
+	do_start
+	case "$?" in
+		0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+		2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+	esac
+	;;
+  stop)
+	do_stop
+	case "$?" in
+		0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+		2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+	esac
+	;;
+  hard_stop)
+	do_hard_stop
+	case "$?" in
+		0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+		2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+	esac
+	;;
+  status)
+	do_status
+	;;
+
+  restart)
+	do_stop
+	case "$?" in
+	  0|1)
+		do_start
+		case "$?" in
+			0) log_end_msg 0 ;;
+			1) log_end_msg 1 ;; # Old process is still running
+			*) log_end_msg 1 ;; # Failed to start
+		esac
+		;;
+	  *)
+		# Failed to stop
+		log_end_msg 1
+		;;
+	esac
+	;;
+  *)
+	echo "Usage: $SCRIPTNAME {start|stop|hard_stop|status|restart}" >&2
+	exit 3
+	;;
+esac
+
+:

@@ -1,0 +1,6 @@
+---
+
+- hosts: all_nodes
+  roles:
+    - collectd
+  become: true

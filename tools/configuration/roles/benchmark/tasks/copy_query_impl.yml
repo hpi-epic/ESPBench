@@ -1,0 +1,7 @@
+- name: Copy query implementation to SUT master
+  copy:
+    src="{{ repository_root_directory }}/implementation/flink/cluster/target/scala-2.11/Flink-Cluster-assembly-0.1.0-SNAPSHOT.jar"
+    dest="{{ benchmarker_home }}/{{ benchmarker_repository_path }}/implementation/flink/cluster/target/scala-2.11/Flink-Cluster-assembly-0.1.0-SNAPSHOT.jar"
+    owner=benchmarker group=benchmarker
+  become: yes
+  become_user: benchmarker

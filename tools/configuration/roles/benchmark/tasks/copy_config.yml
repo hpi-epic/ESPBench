@@ -1,0 +1,7 @@
+- name: Copy benchmark config to master
+  copy:
+    src="{{ playbook_dir }}/../../commons/commons.conf"
+    dest="{{ benchmarker_home }}/{{ benchmarker_repository_path }}/tools/commons/commons.conf"
+    owner=benchmarker group=benchmarking
+  become: yes
+  become_user: benchmarker

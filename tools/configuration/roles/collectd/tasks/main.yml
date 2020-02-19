@@ -1,0 +1,5 @@
+---
+
+
+- include: tasks/install.yml
+- include: tasks/configure.yml

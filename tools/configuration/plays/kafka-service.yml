@@ -1,0 +1,6 @@
+---
+
+- hosts: kafka_cluster
+  roles:
+    - kafka-service
+  become: true

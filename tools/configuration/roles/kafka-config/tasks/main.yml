@@ -1,0 +1,14 @@
+---
+
+- name: Copy Apache Kafka configuration.
+  template:
+    src=server.properties.j2
+    dest=/opt/kafka/config/server.properties
+    owner=benchmarker group=benchmarker
+    mode=777
+
+- name: Set up Kafka Service.
+  copy:
+    src=kafka_initd
+    dest=/etc/init.d/kafka
+    mode=0755

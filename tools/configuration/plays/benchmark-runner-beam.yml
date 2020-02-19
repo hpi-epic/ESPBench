@@ -1,0 +1,176 @@
+---
+
+# Set benchmark parameters
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+    - shell: "grep -A0 system {{ repository_root_directory }}/implementation/beam/src/main/resources/beam.properties | cut -d'=' -f2"
+      register: beamrunner
+    - name: "Set Topic Prefix."
+      include: ../roles/benchmark/tasks/set_topic_prefix.yml home=~ prefix="{{ topic_prefix }}"
+      when: topic_prefix is defined
+    - name: "Set Benchmark Run"
+      include: ../roles/benchmark/tasks/set_benchmark_run.yml home=~ run="{{ benchmark_run }}"
+      when: benchmark_run is defined
+    - name: "Set Sending Interval"
+      include: ../roles/benchmark/tasks/set_sending_interval.yml home=~ interval="{{ sending_interval }}"
+      when: sending_interval is defined
+    - name: "Set Query Name"
+      include: ../roles/benchmark/tasks/set_query_name.yml home=~ query="{{ query_name }}"
+      when: query_name is defined
+    - name: "Set Number of Query Input Streams"
+      include: ../roles/benchmark/tasks/set_number_of_streams.yml home=~ streams="{{ number_of_streams }}"
+      when: number_of_streams is defined
+
+# Prepare Kafka topics
+- hosts: 127.0.0.1
+  connection: local
+  vars_files:
+    - ../group_vars/all
+  tasks:
+    - name: "Compile Project"
+      include: ../roles/benchmark/tasks/compile.yml home=~
+      when: compile_project != 'no'
+    - name: "Create Kafka Topics"
+      include: ../roles/kafka-topic/tasks/create.yml
+    - name: "Reassign Kafka Topics"
+      include: ../roles/kafka-topic/tasks/reassign.yml
+    - name: "Reassign Verify Kafka Topics"
+      include: ../roles/kafka-topic/tasks/reassignVerify.yml
+    - name: "Generate ERP data"
+      include: ../roles/benchmark/tasks/generate_erp_data.yml
+
+- hosts: erp_db
+  vars_files:
+    - ../group_vars/all
+  user: benchmarker
+  tasks:
+    - name: "Copy ERP data to DB server"
+      include: ../roles/benchmark/tasks/copy_erp_data.yml
+    - name: "Copy datasender/importer to DB server"
+      include: ../roles/benchmark/tasks/copy_datasender.yml
+    - name: "Import initial ERP data into DB"
+      include: ../roles/benchmark/tasks/import_erp_data.yml
+
+# Prepare and start CollectD on all nodes
+- hosts: all_nodes
+  vars_files:
+    - ../group_vars/all
+  become: true
+  tasks:
+    - name: "Stop CollectD"
+      include: ../roles/collectd-service/tasks/stop.yml
+      when: collectd == 'yes'
+    - name: "Rename CollectD output folder"
+      include: ../roles/collectd-service/tasks/rename_output_folder.yml
+      when: collectd == 'yes'
+    - name: "Start CollectD"
+      include: ../roles/collectd-service/tasks/start.yml
+      when: collectd == 'yes'
+
+
+# Prepare and start jobs
+- hosts: master
+  vars_files:
+    - ../group_vars/all
+  user: benchmarker
+  tasks:
+    - name: "Create Benchmark Directory"
+      include: ../roles/benchmark/tasks/create_benchmark_dir.yml
+    - name: "Clone Benchmark Repository"
+      include: ../roles/benchmark/tasks/checkout_repository.yml
+    - name: "Copy Config File"
+      include: ../roles/benchmark/tasks/copy_config.yml
+    - name: "Copy Beam Config File"
+      include: ../roles/benchmark/tasks/copy_beamconfig.yml
+    - name: "Copy Query Implementation"
+      include: ../roles/benchmark/tasks/copy_beamquery_impl.yml
+    #Apache Flink
+    - name: "Terminate Running Apache Flink Jobs"
+      include: ../roles/flink/tasks/terminate_running_jobs.yml
+      when: hostvars['127.0.0.1']['beamrunner'].stdout is search('flink')
+    #Apache Spark
+    - name: "Terminate Running Apache Spark Jobs"
+      include: ../roles/spark/tasks/terminate_running_jobs.yml
+      when: hostvars['127.0.0.1']['beamrunner'].stdout is search('spark')
+    - name: "Start Jobs"
+      include: ../roles/beam/tasks/start_jobs.yml
+    - name: "Waiting a few seconds for streaming jobs to start."
+      pause:
+        seconds: 30
+
+
+
+# Run data sender and validate SUT's results
+- hosts: 127.0.0.1
+  connection: local
+  vars_files:
+    - ../group_vars/all
+  tasks:
+    - name: "Start Datasender"
+      include: ../roles/benchmark/tasks/start_datasender.yml
+    - name: "Waiting a few seconds for streaming system to finish queries."
+      pause:
+        seconds: 2400
+
+# Stop CollectD and collect its results to local directory
+- hosts: all_nodes
+  vars_files:
+    - ../group_vars/all
+  become: true
+  tasks:
+    - name: "Stop CollectD"
+      include: ../roles/collectd-service/tasks/stop.yml
+      when: collectd == 'yes'
+    - name: "Get current date time for output directory name"
+      set_fact:
+        date_time: "{{lookup('pipe','date +%Y%m%d%H%M%S')}}"
+      when: collectd == 'yes'
+    - name: "Fetch csv output to local node"
+      include: ../roles/collectd-service/tasks/fetch_csv_output.yml home=~ prefix="{{ topic_prefix }}" run="{{ benchmark_run }}" interval="{{ sending_interval }}" query="{{ query_name }}"
+      become: no
+      when: collectd == 'yes' and
+            topic_prefix is defined and
+            benchmark_run is defined and
+            sending_interval is defined and
+            query_name is defined
+    - name: "Fetch csv output to local node"
+      include: ../roles/collectd-service/tasks/fetch_csv_output.yml
+      become: no
+      when: collectd == 'yes' and
+            topic_prefix is not defined
+
+# Run data sender and validate SUT's results
+- hosts: 127.0.0.1
+  connection: local
+  vars_files:
+    - ../group_vars/all
+  tasks:
+    - name: "Start Validator"
+      include: ../roles/benchmark/tasks/start_validator.yml
+
+# Terminate all running jobs
+- hosts: master
+  user: benchmarker
+  tasks:
+    #Apache Flink
+    - name: "Terminate Running Apache Flink Jobs"
+      include: ../roles/flink/tasks/terminate_running_jobs.yml
+      when: hostvars['127.0.0.1']['beamrunner'].stdout is search('flink')
+    - name: "Restart Apache Flink Cluster"
+      include: ../roles/flink/tasks/restart_cluster.yml
+      when: hostvars['127.0.0.1']['beamrunner'].stdout is search('flink')
+    #Apache Spark
+    - name: "Terminate Running Apache Spark Jobs"
+      include: ../roles/spark/tasks/terminate_running_jobs.yml
+      when: hostvars['127.0.0.1']['beamrunner'].stdout is search('spark')
+    - name: "Delete Apache Spark checkpoints in Hadoop"
+      include: ../roles/spark/tasks/delete_checkpoints.yml
+      when: hostvars['127.0.0.1']['beamrunner'].stdout is search('spark')
+    - name: "Restart Apache Spark Cluster"
+      include: ../roles/spark/tasks/restart_cluster.yml
+      when: hostvars['127.0.0.1']['beamrunner'].stdout is search('spark')
+    #Hazelcast Jet
+    - name: "Terminate Running Hazelcast Jet Jobs"
+      include: ../roles/hazelcastjet/tasks/terminate_running_jobs.yml
+      when: hostvars['127.0.0.1']['beamrunner'].stdout is search('hazelcastjet')

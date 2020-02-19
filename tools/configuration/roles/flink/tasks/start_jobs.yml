@@ -1,0 +1,6 @@
+- name: Start Flink Jobs
+  shell: scala -classpath implementation/flink/cluster/target/scala-2.11/Flink-Cluster-assembly-0.1.0-SNAPSHOT.jar org.hpi.esb.flink.MultiJobRunner
+  args:
+    chdir: "{{ benchmarker_home }}/{{ benchmarker_repository_path }}"
+  become: yes
+  become_user: benchmarker

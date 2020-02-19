@@ -1,0 +1,13 @@
+---
+- name: Find all matching topic directories.
+  find:
+    paths: "{{ kafka_logs_path }}"
+    patterns: "{{ topics_prefix }}*"
+    file_type: "directory"
+  register: result
+
+- name: Delete all matching topic directories.
+  file:
+    path: "{{item.path}}"
+    state: absent
+  with_items: "{{ result.files }}"

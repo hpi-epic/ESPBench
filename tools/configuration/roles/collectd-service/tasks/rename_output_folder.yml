@@ -1,0 +1,4 @@
+---
+
+- name: Rename CSV output folder
+  command: mv /var/lib/collectd/csv/ /var/lib/collectd/csv_{{ansible_date_time.iso8601_basic_short}}

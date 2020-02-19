@@ -1,0 +1,7 @@
+- name: Copy data generator to DB server
+  copy:
+    src="~/{{ relative_repository_path }}/tools/datagen"
+    dest="{{ benchmarker_home }}/{{ relative_repository_path }}/tools/"
+    owner=benchmarker group=benchmarker
+  become: yes
+  become_user: benchmarker

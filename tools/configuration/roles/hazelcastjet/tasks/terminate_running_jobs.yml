@@ -1,0 +1,4 @@
+- name: Terminate Running Hazelcast Jet Jobs
+  command: /bin/bash -l -c "/opt/hazelcast-jet/bin/jet.sh list-jobs | awk '{print $2}' | tail -n +2 $1 | xargs -n1 /opt/hazelcast-jet/bin/jet.sh cancel $1"
+  become: yes
+  become_user: benchmarker

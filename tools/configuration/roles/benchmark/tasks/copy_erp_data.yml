@@ -1,0 +1,6 @@
+- name: Copy ERP data to DB node
+  copy:
+    src: "{{ repository_root_directory }}/tools/tpc-c_gen/data"
+    dest: "{{ benchmarker_home }}/"
+    owner: benchmarker
+    group: benchmarker

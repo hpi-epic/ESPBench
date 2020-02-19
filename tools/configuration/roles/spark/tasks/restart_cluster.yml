@@ -1,0 +1,17 @@
+- name: "Stop Apache Spark Cluster"
+  command: "/bin/sh -c '/opt/spark/sbin/stop-all.sh'"
+  async: 45
+  poll: 0
+
+- name: "Waiting a few seconds for cluster to shut down."
+  pause:
+    seconds: 10
+
+- name: "Start Apache Spark Cluster"
+  command: "/bin/sh -c '/opt/spark/sbin/start-all.sh'"
+  async: 45
+  poll: 0
+
+- name: "Waiting a few seconds for cluster to start again."
+  pause:
+    seconds: 10

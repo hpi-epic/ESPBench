@@ -1,0 +1,4 @@
+- name: Generate ERP data
+  shell: java -jar tools/tpc-c_gen/target/scala-2.11/TPC-CDataGenerator-assembly-0.1.0-SNAPSHOT.jar
+  args:
+      chdir: "{{ repository_root_directory }}"

@@ -1,0 +1,5 @@
+---
+- name: Start collecD Service.
+  service: name=collectd state=started 
+  tags:
+    - start

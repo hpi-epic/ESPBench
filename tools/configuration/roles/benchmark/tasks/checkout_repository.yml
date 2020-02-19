@@ -1,0 +1,6 @@
+- name: Clone Benchmark Repository
+  git:
+    repo: "{{ repository }}"
+    dest: "~/{{ benchmarker_repository_path }}"
+    accept_hostkey: yes
+    force: yes

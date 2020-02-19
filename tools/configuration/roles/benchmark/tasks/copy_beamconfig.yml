@@ -1,0 +1,11 @@
+- name: Ensures "{{ benchmarker_home }}/{{ benchmarker_repository_path }}/implementation/beam/src/main/resources" dir exists
+  file: path="{{ benchmarker_home }}/{{ benchmarker_repository_path }}/implementation/beam/src/main/resources" state=directory
+  become: yes
+  become_user: benchmarker
+- name: Copy Apache Beam benchmark config to master
+  copy:
+    src="{{ playbook_dir }}/../../../implementation/beam/src/main/resources/beam.properties"
+    dest="{{ benchmarker_home }}/{{ benchmarker_repository_path }}/implementation/beam/src/main/resources/beam.properties"
+    owner=benchmarker group=benchmarking
+  become: yes
+  become_user: benchmarker

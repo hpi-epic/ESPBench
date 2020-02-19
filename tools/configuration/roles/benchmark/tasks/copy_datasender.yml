@@ -1,0 +1,6 @@
+- name: Copy datasender/importer to master node/DB node
+  copy:
+    src: "{{ repository_root_directory }}/tools/datasender/target/scala-2.11/DataSender-assembly-0.1.0-SNAPSHOT.jar"
+    dest: "{{ benchmarker_home }}/"
+    owner: benchmarker
+    group: benchmarker

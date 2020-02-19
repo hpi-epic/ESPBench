@@ -1,0 +1,6 @@
+
+- replace:
+    path: '{{ repository_root_directory }}/tools/commons/commons.conf'
+    regexp: '^benchmark-run = .*$'
+    replace: 'benchmark-run = {{ run }}'
+  when: run is defined

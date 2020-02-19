@@ -1,0 +1,4 @@
+- name: Terminate Running Apache Spark Jobs
+  shell: "jps | grep -A0 SparkSubmit | cut -d' ' -f1 $1 | while read pid; do kill -9 $pid; done"
+  become: yes
+  become_user: benchmarker

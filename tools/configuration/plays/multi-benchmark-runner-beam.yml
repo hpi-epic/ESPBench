@@ -1,0 +1,21 @@
+---
+
+- import_playbook: benchmark-runner-beam.yml topic_prefix="MFLINKSTATISTICS" benchmark_run=1 sending_interval="1000000" query_name="Statistics" number_of_streams=1
+- import_playbook: benchmark-runner-beam.yml topic_prefix="MFLINKSTATISTICS" benchmark_run=2 sending_interval="1000000" query_name="Statistics" number_of_streams=1
+- import_playbook: benchmark-runner-beam.yml topic_prefix="MFLINKSTATISTICS" benchmark_run=3 sending_interval="1000000" query_name="Statistics" number_of_streams=1
+
+- import_playbook: benchmark-runner-beam.yml topic_prefix="MFLINKSOS" benchmark_run=1 sending_interval="1000000" query_name="StochasticOutlierSelection" number_of_streams=1
+- import_playbook: benchmark-runner-beam.yml topic_prefix="MFLINKSOS" benchmark_run=2 sending_interval="1000000" query_name="StochasticOutlierSelection" number_of_streams=1
+- import_playbook: benchmark-runner-beam.yml topic_prefix="MFLINKSOS" benchmark_run=3 sending_interval="1000000" query_name="StochasticOutlierSelection" number_of_streams=1
+
+- import_playbook: benchmark-runner-beam.yml topic_prefix="MFLINKABS" benchmark_run=1 sending_interval="1000000" query_name="AbsoluteThreshold" number_of_streams=1
+- import_playbook: benchmark-runner-beam.yml topic_prefix="MFLINKABS" benchmark_run=2 sending_interval="1000000" query_name="AbsoluteThreshold" number_of_streams=1
+- import_playbook: benchmark-runner-beam.yml topic_prefix="MFLINKABS" benchmark_run=3 sending_interval="1000000" query_name="AbsoluteThreshold" number_of_streams=1
+
+- import_playbook: benchmark-runner-beam.yml topic_prefix="MFLINKMP" benchmark_run=1 sending_interval="1000000" query_name="MachinePower" number_of_streams=2
+- import_playbook: benchmark-runner-beam.yml topic_prefix="MFLINKMP" benchmark_run=2 sending_interval="1000000" query_name="MachinePower" number_of_streams=2
+- import_playbook: benchmark-runner-beam.yml topic_prefix="MFLINKMP" benchmark_run=3 sending_interval="1000000" query_name="MachinePower" number_of_streams=2
+
+- import_playbook: benchmark-runner-beam.yml topic_prefix="MFLINKPT" benchmark_run=1 sending_interval="1000000" query_name="ProcessingTimes" number_of_streams=1
+- import_playbook: benchmark-runner-beam.yml topic_prefix="MFLINKPT" benchmark_run=2 sending_interval="1000000" query_name="ProcessingTimes" number_of_streams=1
+- import_playbook: benchmark-runner-beam.yml topic_prefix="MFLINKPT" benchmark_run=3 sending_interval="1000000" query_name="ProcessingTimes" number_of_streams=1
