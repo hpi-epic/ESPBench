@@ -1,0 +1,16 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: guenter/sbt_scala_java  
+    - name: Compile
+      run: sbt clean compile
+    - name: Test
+      run: sbt test
