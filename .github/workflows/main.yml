@@ -1,16 +1,20 @@
-name: CI
+name: CI Service
 
 on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
-    - uses: guenter/sbt_scala_java  
+    - uses: docker://guenter/sbt_scala_java  
     - name: Compile
       run: sbt clean compile
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: docker://guenter/sbt_scala_java  
     - name: Test
       run: sbt test
