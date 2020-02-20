@@ -10,7 +10,7 @@ For further details, see:
 [2. HesseBench Process](#2-hessebench-process)<br/>
 [3. Structure of the Project](#3-structure-of-the-project)<br/>
 [4. HesseBench Setup and Execution](#4-hessebench-setup)<br/>
-[5. HesseBench Results](#4-hessebench-results)
+[5. HesseBench Results](#5-hessebench-results)
 
 ## 1. HesseBench Architecture <a name="1-hessebench-architecture"/>
 The overall architecture is visualized in the image below:
@@ -132,5 +132,5 @@ If you want to use the example implementation, you need to adapt at least two fi
 - `implementation/beam/src/main/resources/beam.properties`
 - The `beamRunner` variable in `build.sbt`
 
-## 5. HesseBench Results <a name="6-hessebench-results"/>
+## 5. HesseBench Results <a name="5-hessebench-results"/>
 The validator will create a `logs` directory that will contain information about the, e.g., query result correctness, and latencies.
