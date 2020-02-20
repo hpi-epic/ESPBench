@@ -1,10 +1,11 @@
 HesseBench - The Enterprise Streaming Benchmark (ESB)
 ---
-This repository contains HesseBench, the enterprise streaming benchmark. It aims at benchmarking data stream processing systems (DSPSs) or architectures in an enterprise context, meaning when not only streaming data is analyzed but also integrated with historical business data.
-This repository contains the HesseBench toolkit, some example configurations, and an example query implementation using Apache Beam.
+This repository contains *HesseBench*, the enterprise streaming benchmark. It allows comparing [data stream processing systems](https://en.wikipedia.org/wiki/Stream_processing) (DSPSs) and architectures in an enterprise context, i.e. in an environemnt where streaming data is integrated with existing, historical business data.
+This repository contains the HesseBench toolkit, example configurations, and an example query implementation using [Apache Beam](https://github.com/apache/beam).
 
 For further details, see:
 *Hesse, Guenter, et al. "HesseBench: The Enterprise Streaming Benchmark" 2020, tbd.*
+
 #### Table of Contents  
 [1. HesseBench Architecture](#1-hessebench-architecture)<br/>
 [2. HesseBench Process](#2-hessebench-process)<br/>
@@ -17,9 +18,10 @@ The overall architecture is visualized in the image below:
 <p align="center">
 <img src="https://owncloud.hpi.de/index.php/apps/files_sharing/ajax/publicpreview.php?x=2378&y=848&a=true&file=HesseBenchArch.png&t=piRX6IDNo5Gy9bp&scalingup=0" width="600">
 </p>
-There is input data that is sent to Apache Kafka by the data sender tool, which is part of this repository.
-The DSPS runs the queries. It gets the data from Apache Kafka as input as well as from the DBMS where required by the query.
-After the configured time of the benchmark run is over, the validator and result calculator, which is also part of this repository, can check the query result correctness and compute the benchmark results, i.e., the latencies.
+
+Input data is sent to [Apache Kafka](https://kafka.apache.org/) by the data sender tool, which is [part of this repository](https://github.com/Gnni/EnterpriseStreamingBenchmark/tree/master/tools/datasender).
+The DSPS runs the queries. It gets the data from Apache Kafka as input as well as from the enterprise database management system (DBMS) when required by the query.
+After the configured time of the benchmark run is over, the validator and result calculator, which are also part of this repository, can check the query result correctness and compute the benchmark results, i.e., the latencies.
 
 ## 2. HesseBench Process <a name="2-hessebench-process"/>
 
@@ -28,7 +30,7 @@ A brief process overview of HesseBench is visualized in the activity diagram bel
 <img src="https://owncloud.hpi.de/index.php/apps/files_sharing/ajax/publicpreview.php?x=2378&y=848&a=true&file=Screenshot%25202020-02-19%2520at%252014.13.11.png&t=gBJplJAIye1dvy0&scalingup=0" width="900">
 </p>
 
-The entire process is automated using *ansible* scripts.
+The entire process is automated using [Ansible](https://www.ansible.com/) scripts.
 
 ## 3. Structure of the Project <a name="3-structure-of-the-project"/>
 
