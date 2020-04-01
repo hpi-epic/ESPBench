@@ -1,19 +1,19 @@
-HesseBench - The Enterprise Streaming Benchmark (ESB)
+ESPBench - The Enterprise Stream Processing Benchmark
 ---
-This repository contains *HesseBench*, the enterprise streaming benchmark. It allows comparing [data stream processing systems](https://en.wikipedia.org/wiki/Stream_processing) (DSPSs) and architectures in an enterprise context, i.e. in an environemnt where streaming data is integrated with existing, historical business data.
-This repository contains the HesseBench toolkit, example configurations, and an example query implementation using [Apache Beam](https://github.com/apache/beam).
+This repository contains *ESPBench*, the enterprise streaming benchmark. It allows comparing [data stream processing systems](https://en.wikipedia.org/wiki/Stream_processing) (DSPSs) and architectures in an enterprise context, i.e. in an environemnt where streaming data is integrated with existing, historical business data.
+This repository contains the ESPBench toolkit, example configurations, and an example query implementation using [Apache Beam](https://github.com/apache/beam).
 
 For further details, see:
-*Hesse, Guenter, et al. "HesseBench: The Enterprise Streaming Benchmark" 2020, tbd.*
+*Hesse, Guenter, et al. "ESPBench: The Enterprise Stream Processing Benchmark" 2020, tbd.*
 
 #### Table of Contents  
-[1. HesseBench Architecture](#1-hessebench-architecture)<br/>
-[2. HesseBench Process](#2-hessebench-process)<br/>
+[1. ESPBench Architecture](#1-espbench-architecture)<br/>
+[2. ESPBench Process](#2-espbench-process)<br/>
 [3. Structure of the Project](#3-structure-of-the-project)<br/>
-[4. HesseBench Setup and Execution](#4-hessebench-setup)<br/>
-[5. HesseBench Results](#5-hessebench-results)
+[4. ESPBench Setup and Execution](#4-espbench-setup)<br/>
+[5. ESPBench Results](#5-espbench-results)
 
-## 1. HesseBench Architecture <a name="1-hessebench-architecture"/>
+## 1. ESPBench Architecture <a name="1-espbench-architecture"/>
 The overall architecture is visualized in the image below:
 <p align="center">
 <img src="https://owncloud.hpi.de/index.php/apps/files_sharing/ajax/publicpreview.php?x=2378&y=848&a=true&file=HesseBenchArch.png&t=piRX6IDNo5Gy9bp&scalingup=0" width="600">
@@ -23,9 +23,9 @@ Input data is sent to [Apache Kafka](https://kafka.apache.org/) by the data send
 The DSPS runs the queries. It gets the data from Apache Kafka as input as well as from the enterprise database management system (DBMS) when required by the query.
 After the configured time of the benchmark run is over, the validator and result calculator, which are also part of this repository, can check the query result correctness and compute the benchmark results, i.e., the latencies.
 
-## 2. HesseBench Process <a name="2-hessebench-process"/>
+## 2. ESPBench Process <a name="2-espbench-process"/>
 
-A brief process overview of HesseBench is visualized in the activity diagram below:
+A brief process overview of ESPBench is visualized in the activity diagram below:
 <p align="center">
 <img src="https://owncloud.hpi.de/index.php/apps/files_sharing/ajax/publicpreview.php?x=2378&y=848&a=true&file=Screenshot%25202020-02-19%2520at%252014.13.11.png&t=gBJplJAIye1dvy0&scalingup=0" width="900">
 </p>
@@ -35,7 +35,7 @@ The entire process is automated using [Ansible](https://www.ansible.com/) script
 ## 3. Structure of the Project <a name="3-structure-of-the-project"/>
 
 ```
-EnterpriseStreamingBenchmark
+ESPBench
 │   README.md
 │   .gitignore
 │   .gitlab-ci.yml    
@@ -84,7 +84,7 @@ EnterpriseStreamingBenchmark
         └───...
 ```
 
-## 4. HesseBench Setup and Execution <a name="4-hessebench-setup"/>
+## 4. ESPBench Setup and Execution <a name="4-espbench-setup"/>
 All steps are tested on Ubuntu servers.
 
 - Create a user `benchmarker` on all involved machines that has sudo access
@@ -134,5 +134,5 @@ If you want to use the example implementation, you need to adapt at least two fi
 - `implementation/beam/src/main/resources/beam.properties`
 - The `beamRunner` variable in `build.sbt`
 
-## 5. HesseBench Results <a name="5-hessebench-results"/>
+## 5. ESPBench Results <a name="5-espbench-results"/>
 The validator will create a `logs` directory that will contain information about the, e.g., query result correctness, and latencies.
