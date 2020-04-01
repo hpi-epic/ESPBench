@@ -1,6 +1,6 @@
 import Dependencies._
 
-name := "EnterpriseStreamingBenchmark"
+name := "ESPBench"
 val flinkVersion: String = "1.8.2"
 val sparkVersion: String = "2.4.4"
 val beamVersion: String = "2.16.0"
