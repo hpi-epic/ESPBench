@@ -7,6 +7,6 @@ relative_repository_path: "../../.."
 repository_root_directory: "{{ playbook_dir }}/../../.."
 monitoring_output_directory: "{{ repository_root_directory }}/tools/validator/results/monitoring"
 benchmarker_home: "/home/benchmarker"
-benchmarker_repository_path: "Benchmarks/EnterpriseStreamingBenchmark"
+benchmarker_repository_path: "Benchmarks/ESPBench"
 datasender_heap: 1
-repository: "git@https://github.com/Gnni/EnterpriseStreamingBenchmark.git"
+repository: "git@https://github.com/Gnni/ESPBench.git"
