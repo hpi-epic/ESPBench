@@ -1,10 +1,13 @@
-ESPBench - The Enterprise Stream Processing Benchmark
+ESPBench - The Enterprise Stream Processing Benchmark 
 ---
+[![DOI](https://zenodo.org/badge/241661423.svg)](https://zenodo.org/badge/latestdoi/241661423)
+
 This repository contains *ESPBench*, the enterprise streaming benchmark. It allows comparing [data stream processing systems](https://en.wikipedia.org/wiki/Stream_processing) (DSPSs) and architectures in an enterprise context, i.e. in an environemnt where streaming data is integrated with existing, historical business data.
-This repository contains the ESPBench toolkit, example configurations, and an example query implementation using [Apache Beam](https://github.com/apache/beam).
+This repository contains the ESPBench toolkit, example configurations, and an example query implementation using [Apache Beam](https://github.com/apache/beam). 
 
 For further details, see:
 *Hesse, Guenter, et al. "ESPBench: The Enterprise Stream Processing Benchmark" 2020, tbd.*
+and the [ESPBench example implementation results](https://github.com/guenter-hesse/ESPBenchExperiments)
 
 #### Table of Contents  
 [1. ESPBench Architecture](#1-espbench-architecture)<br/>
