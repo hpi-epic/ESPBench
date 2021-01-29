@@ -88,6 +88,9 @@ ESPBench
 ```
 
 ## 4. ESPBench Setup and Execution <a name="4-espbench-setup"/>
+You find brief instructions in the following. If you are looking for a more detailed setup and execution description, 
+please have a look at [this file](docs/ESPBenchSetupAndExecutionDetailed.md).
+
 All steps are tested on Ubuntu servers.
 
 - Create a user `benchmarker` on all involved machines that has sudo access
@@ -98,7 +101,7 @@ All steps are tested on Ubuntu servers.
   - Copy `tools/configuration/kafka/etc/init.d/kafka` to `/etc/init.d/` on the Apache Kafka servers
   - Run `update-rc.d kafka defaults`
 - Install `PostgreSQL` on one server (you can use another DBMS, however, that requires some adaptions in the tools)
-- Create the directory `Benchmarks` ind the home directory of the user `benchmarker` and clone the repository into this folder
+- Create the directory `Benchmarks` in the home directory of the user `benchmarker` and clone the repository into this folder
 - The project can be built using `sbt assembly`
 
 ###### tools/commons/commons.conf
@@ -112,12 +115,12 @@ All steps are tested on Ubuntu servers.
 - After cloning the repository and setting up the systems, you change to the `tools/configuration` directory and start the benchmark (as shown in the activity diagram above) from here, e.g., via `ansible-playbook -vvvv plays/benchmark-runner-beam.yml` for the example implementations of this repository. The number of `v` define the level of verbosity
 - Adapt the `group_vars/all` files if needed
 - The directories `plays` and `roles` contain several ansible files, which can be adapted if needed. The starting point that represents the entire process is `plays/benchmark-runner-beam.yml` for the example implementation. These scripts also contain information about, e.g., how to start the data sender or the data generation.
-- The `hosts` file needs to be edited, i.e, the servers' IP addresses needs to be entered
+- The `hosts` file needs to be edited, i.e, the servers' IP addresses need to be entered
 
 ###### tools/datasender
 - Input data is taken from DEBS 2012 Grand Challenge, which can be downloaded from [ftp://ftp.mi.fu-berlin.de/pub/debs2012/](ftp://ftp.mi.fu-berlin.de/pub/debs2012/)
-- This data file needs converted using the `dos2unix` command, and duplicated, so that there are two input files.
-- The two files needs to be extended by a machine ID using the following commands (adapt file names):
+- This data file needs to be converted using the `dos2unix` command, and duplicated, so that there are two input files.
+- The two files need to be extended by a machine ID using the following commands (adapt file names):
   - First file: `awk 'BEGIN { FS = OFS = "\t" } { $(NF+1) = 1; print $0 }' input1.csv >
  output1.csv`
   - Second file: `awk 'BEGIN { FS = OFS = "\t" } { $(NF+1) = 2; print $0 }' input2.csv >
