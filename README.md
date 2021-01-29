@@ -6,8 +6,9 @@ This repository contains *ESPBench*, the enterprise streaming benchmark. It allo
 This repository contains the ESPBench toolkit, example configurations, and an example query implementation using [Apache Beam](https://github.com/apache/beam). 
 
 For further details, see:
-*Hesse, Guenter, et al. "ESPBench: The Enterprise Stream Processing Benchmark" 2020, tbd.*
-and the [ESPBench example implementation results](https://github.com/guenter-hesse/ESPBenchExperiments)
+*Hesse, Guenter, et al. "ESPBench: The Enterprise Stream Processing Benchmark", ACM/SPEC International Conference on Performance 
+Engineering (ICPE), 2021*
+and the [ESPBench example implementation results](https://github.com/guenter-hesse/ESPBenchExperiments).
 
 #### Table of Contents  
 [1. ESPBench Architecture](#1-espbench-architecture)<br/>
