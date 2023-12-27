@@ -1,0 +1,147 @@
+\chapter{ESPBench -\/ The Enterprise Stream Processing Benchmark}
+\hypertarget{md_ESPBench-multiSUT_2README}{}\label{md_ESPBench-multiSUT_2README}\index{ESPBench -\/ The Enterprise Stream Processing Benchmark@{ESPBench -\/ The Enterprise Stream Processing Benchmark}}
+\href{https://zenodo.org/badge/latestdoi/241661423}{\texttt{ }}
+
+This repository contains {\itshape ESPBench}, the enterprise streaming benchmark. It allows comparing \href{https://en.wikipedia.org/wiki/Stream_processing}{\texttt{ data stream processing systems}} (DSPSs) and architectures in an enterprise context, i.\+e. in an environemnt where streaming data is integrated with existing, historical business data. This repository contains the ESPBench toolkit, example configurations, and an example query implementation using \href{https://github.com/apache/beam}{\texttt{ Apache Beam}}.
+
+For further details, see\+: {\itshape Hesse, Guenter, et al. "{}\+ESPBench\+: The Enterprise Stream Processing Benchmark"{}, ACM/\+SPEC International Conference on Performance Engineering (ICPE), 2021} and the \href{https://github.com/guenter-hesse/ESPBenchExperiments}{\texttt{ ESPBench example implementation results}}.\hypertarget{md_ESPBench-multiSUT_2README_autotoc_md11}{}\doxysubsubsection{\texorpdfstring{Table of Contents}{Table of Contents}}\label{md_ESPBench-multiSUT_2README_autotoc_md11}
+1. ESPBench Architecture~\newline
+ 2. ESPBench Process~\newline
+ 3. Structure of the Project~\newline
+ 4. ESPBench Setup and Execution~\newline
+ 5. ESPBench Results\hypertarget{md_ESPBench-multiSUT_2README_autotoc_md12}{}\doxysection{\texorpdfstring{1. ESPBench Architecture $<$a name="{}1-\/espbench-\/architecture"{}/$>$}{1. ESPBench Architecture <a name="1-espbench-architecture"/>}}\label{md_ESPBench-multiSUT_2README_autotoc_md12}
+The overall architecture is visualized in the image below\+: 
+
+ 
+
+Input data is sent to \href{https://kafka.apache.org/}{\texttt{ Apache Kafka}} by the data sender tool, which is \href{https://github.com/Gnni/EnterpriseStreamingBenchmark/tree/master/tools/datasender}{\texttt{ part of this repository}}. The DSPS runs the queries. It gets the data from Apache Kafka as input as well as from the enterprise database management system (DBMS) when required by the query. After the configured time of the benchmark run is over, the validator and result calculator, which are also part of this repository, can check the query result correctness and compute the benchmark results, i.\+e., the latencies.\hypertarget{md_ESPBench-multiSUT_2README_autotoc_md13}{}\doxysection{\texorpdfstring{2. ESPBench Process $<$a name="{}2-\/espbench-\/process"{}/$>$}{2. ESPBench Process <a name="2-espbench-process"/>}}\label{md_ESPBench-multiSUT_2README_autotoc_md13}
+A brief process overview of ESPBench is visualized in the activity diagram below\+: 
+
+ 
+
+The entire process is automated using \href{https://www.ansible.com/}{\texttt{ Ansible}} scripts.\hypertarget{md_ESPBench-multiSUT_2README_autotoc_md14}{}\doxysection{\texorpdfstring{3. Structure of the Project $<$a name="{}3-\/structure-\/of-\/the-\/project"{}/$>$}{3. Structure of the Project <a name="3-structure-of-the-project"/>}}\label{md_ESPBench-multiSUT_2README_autotoc_md14}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ESPBench}
+\DoxyCodeLine{│\ \ \ README.md}
+\DoxyCodeLine{│\ \ \ .gitignore}
+\DoxyCodeLine{│\ \ \ .gitlab-\/ci.yml\ \ \ \ }
+\DoxyCodeLine{│\ \ \ build.sbt}
+\DoxyCodeLine{│\ \ \ scalastyle-\/config.xml}
+\DoxyCodeLine{│}
+\DoxyCodeLine{└───ci}
+\DoxyCodeLine{│\ \ \ │\ \ \ Dockerfile}
+\DoxyCodeLine{│}
+\DoxyCodeLine{└───implementation}
+\DoxyCodeLine{│\ \ \ └───beam}
+\DoxyCodeLine{│\ \ \ \ \ \ \ └───...}
+\DoxyCodeLine{│\ \ \ }
+\DoxyCodeLine{└───project}
+\DoxyCodeLine{│\ \ \ │\ \ \ build.properties}
+\DoxyCodeLine{│\ \ \ │\ \ \ Dependencies.scala}
+\DoxyCodeLine{│}
+\DoxyCodeLine{└───tools}
+\DoxyCodeLine{\ \ \ \ └───commons}
+\DoxyCodeLine{\ \ \ \ │\ \ \ └───src}
+\DoxyCodeLine{\ \ \ \ │\ \ \ \ \ \ \ └───...}
+\DoxyCodeLine{\ \ \ \ │\ \ \ \ \ \ \ │\ \ \ commons.conf}
+\DoxyCodeLine{\ \ \ \ │}
+\DoxyCodeLine{\ \ \ \ └───configuration}
+\DoxyCodeLine{\ \ \ \ │\ \ \ └───group\_vars}
+\DoxyCodeLine{\ \ \ \ │\ \ \ └───plays}
+\DoxyCodeLine{\ \ \ \ │\ \ \ └───roles}
+\DoxyCodeLine{\ \ \ \ │\ \ \ └───...}
+\DoxyCodeLine{\ \ \ \ │\ \ \ │\ \ \ ansible.cfg}
+\DoxyCodeLine{\ \ \ \ │\ \ \ │\ \ \ hosts}
+\DoxyCodeLine{\ \ \ \ │}
+\DoxyCodeLine{\ \ \ \ └───datasender}
+\DoxyCodeLine{\ \ \ \ │\ \ \ └───src}
+\DoxyCodeLine{\ \ \ \ │\ \ \ \ \ \ \ └───...}
+\DoxyCodeLine{\ \ \ \ │\ \ \ \ \ \ \ │\ \ \ datasender.conf}
+\DoxyCodeLine{\ \ \ \ │}
+\DoxyCodeLine{\ \ \ \ └───tpc-\/c\_gen}
+\DoxyCodeLine{\ \ \ \ │\ \ \ └───src}
+\DoxyCodeLine{\ \ \ \ │\ \ \ \ \ \ \ └───...}
+\DoxyCodeLine{\ \ \ \ │\ \ \ \ \ \ \ │\ \ \ tpc-\/c.properties}
+\DoxyCodeLine{\ \ \ \ │}
+\DoxyCodeLine{\ \ \ \ └───util}
+\DoxyCodeLine{\ \ \ \ │\ \ \ └───...}
+\DoxyCodeLine{\ \ \ \ │}
+\DoxyCodeLine{\ \ \ \ └───validator}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ └───...}
+
+\end{DoxyCode}
+\hypertarget{md_ESPBench-multiSUT_2README_autotoc_md15}{}\doxysection{\texorpdfstring{4. ESPBench Setup and Execution $<$a name="{}4-\/espbench-\/setup"{}/$>$}{4. ESPBench Setup and Execution <a name="4-espbench-setup"/>}}\label{md_ESPBench-multiSUT_2README_autotoc_md15}
+You find brief instructions in the following. If you are looking for a more detailed setup and execution description, please have a look at \doxysectlink{md_ESPBench-multiSUT_2docs_2ESPBenchSetupAndExecutionDetailed}{this file}{0}.
+
+All steps are tested on Ubuntu servers.
+
+
+\begin{DoxyItemize}
+\item Create a user {\ttfamily benchmarker} on all involved machines that has sudo access
+\item Ensure that this user can connect to all machines via ssh w/o password, e.\+g., through adding the ssh public key to the {\ttfamily authorized\+\_\+keys} files
+\item Install {\ttfamily Apache Kafka} and the DSPSs to be tested under {\ttfamily /opt/} -\/ you can find example configurations in the {\ttfamily tools/configurations} directory
+\item Make Apache Kafka a service\+:
+\begin{DoxyItemize}
+\item Run {\ttfamily sudo apt install policykit-\/1}
+\item Copy {\ttfamily tools/configuration/kafka/etc/init.\+d/kafka} to {\ttfamily /etc/init.d/} on the Apache Kafka servers
+\item Run {\ttfamily update-\/rc.\+d kafka defaults}
+\end{DoxyItemize}
+\item Install {\ttfamily Postgre\+SQL} on one server (you can use another DBMS, however, that requires some adaptions in the tools)
+\item Create the directory {\ttfamily Benchmarks} in the home directory of the user {\ttfamily benchmarker} and clone the repository into this folder
+\item The project can be built using {\ttfamily sbt assembly}
+\end{DoxyItemize}
+
+\doxysubparagraph*{tools/commons/commons.\+conf}
+
+
+\begin{DoxyItemize}
+\item Define the Apache Kafka topic prefix and the benchmark run number, which will have an impact on the Apache Kafka topic names that are going to be created by the ansible scripts
+\item Define the query you want to execute (config for each query in comment)
+\item Define the sending interval, which determines the pause between sending two records -\/ a pause of, e.\+g., 1,000,000ns would result in an input rate of 1,000 records/s
+\item Define the benchmark duration
+\item Define the Apache Kafka bootstrap servers and zookeeper servers
+\end{DoxyItemize}
+
+\doxysubparagraph*{tools/configuration}
+
+
+\begin{DoxyItemize}
+\item After cloning the repository and setting up the systems, you change to the {\ttfamily tools/configuration} directory and start the benchmark (as shown in the activity diagram above) from here, e.\+g., via {\ttfamily ansible-\/playbook -\/vvvv plays/benchmark-\/runner-\/beam.\+yml} for the example implementations of this repository. The number of {\ttfamily v} define the level of verbosity
+\item Adapt the {\ttfamily group\+\_\+vars/all} files if needed
+\item The directories {\ttfamily plays} and {\ttfamily roles} contain several ansible files, which can be adapted if needed. The starting point that represents the entire process is {\ttfamily plays/benchmark-\/runner-\/beam.\+yml} for the example implementation. These scripts also contain information about, e.\+g., how to start the data sender or the data generation.
+\item The {\ttfamily hosts} file needs to be edited, i.\+e, the servers\textquotesingle{} IP addresses need to be entered
+\end{DoxyItemize}
+
+\doxysubparagraph*{tools/datasender}
+
+
+\begin{DoxyItemize}
+\item Input data is taken from DEBS 2012 Grand Challenge, which can be downloaded from \href{ftp://ftp.mi.fu-berlin.de/pub/debs2012/}{\texttt{ ftp\+://ftp.\+mi.\+fu-\/berlin.\+de/pub/debs2012/}}
+\item This data file needs to be converted using the {\ttfamily dos2unix} command, and duplicated, so that there are two input files.
+\item The two files need to be extended by a machine ID using the following commands (adapt file names)\+:
+\begin{DoxyItemize}
+\item First file\+: `awk \textquotesingle{}BEGIN \{ FS = OFS = "{}\textbackslash{}t"{} \} \{ \$(NF+1) = 1; print \$0 \}' input1.\+csv \texorpdfstring{$>$}{>} output1.\+csv{\ttfamily }
+\item {\ttfamily Second file\+:}awk \textquotesingle{}BEGIN \{ FS = OFS = "{}\textbackslash{}t"{} \} \{ \$(NF+1) = 2; print \$0 \}\textquotesingle{} input2.\+csv \texorpdfstring{$>$}{>} output2.\+csv{\ttfamily }
+\end{DoxyItemize}
+\item {\ttfamily A third input file is}production\+\_\+times.\+csv{\ttfamily , which is generated by the TPC-\/C data generator that is part of this project.}
+\item {\ttfamily The file}datasender.\+conf{\ttfamily contains Apache Kafka producer configs and the location of the input data files.}
+\item {\ttfamily The file}src/main/resources/application.\+conf\`{} needs the correct DBMS configuration.
+\end{DoxyItemize}
+
+\doxysubparagraph*{tools/tpc-\/c\+\_\+gen}
+
+The {\ttfamily tpc-\/c.\+properties} file contains the default setting WRT the number of warehouses and the data output directory. Changes of the output directory require according adaptions in ansible scripts.
+
+\doxysubparagraph*{tools/validator}
+
+The file {\ttfamily src/main/resources/application.\+conf} needs the correct DBMS configuration.
+
+\doxysubparagraph*{Example Implementation}
+
+If you want to use the example implementation, you need to adapt at least two files accordingly\+:
+\begin{DoxyItemize}
+\item {\ttfamily implementation/beam/src/main/resources/beam.\+properties}
+\item The {\ttfamily beam\+Runner} variable in {\ttfamily build.\+sbt}
+\end{DoxyItemize}\hypertarget{md_ESPBench-multiSUT_2README_autotoc_md16}{}\doxysection{\texorpdfstring{5. ESPBench Results $<$a name="{}5-\/espbench-\/results"{}/$>$}{5. ESPBench Results <a name="5-espbench-results"/>}}\label{md_ESPBench-multiSUT_2README_autotoc_md16}
+The validator will create a {\ttfamily logs} directory that will contain information about the, e.\+g., query result correctness, and latencies. 
